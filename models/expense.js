@@ -1,5 +1,6 @@
 const {Sequelize,DataTypes}=require('sequelize');
 const sequelize=require('../utils/db-connection');
+const User=require('./user');
 
 const Expense=sequelize.define('Expense',{
   id: {
@@ -20,5 +21,8 @@ const Expense=sequelize.define('Expense',{
     allowNull: false
   } 
 });
+
+User.hasMany(Expense);
+Expense.belongsTo(User);
 
 module.exports=Expense;

@@ -1,5 +1,6 @@
 const User=require('../models/user');
 const bcrypt=require('bcrypt');
+const jwt=require('jsonwebtoken');
 
 const userLogin=async (req,res)=>{
   const {email,password}=req.body;
@@ -16,8 +17,10 @@ const userLogin=async (req,res)=>{
     if (!passwordMatch) {
       return res.status(401).json({ message: 'User password is wrong' });
     }
-    
-    return res.status(200).json({ message: 'User login successful' });
+
+    const token=jwt.sign({userId:user.id},'a8f!0D#92Ld*9@ksj@!xYzP2$kjN3qZ9',{expiresIn:'1h'});
+
+    return res.status(200).json({ message: 'User login successful',token });
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).json({ message: 'Internal server error' });

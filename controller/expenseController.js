@@ -3,7 +3,7 @@ const Expense=require('../models/expense');
 const addExpense=async (req ,res)=>{
   try {
     const { amount, description, category }=req.body;
-    const newExpense=await Expense.create({amount, description, category});
+    const newExpense=await Expense.create({amount, description, category,UserId:req.user.userId});
     res.status(201).json({ message: 'Expense added', expense: newExpense });
   } catch (error) {
     console.error('Error adding expense:', error);
@@ -13,7 +13,7 @@ const addExpense=async (req ,res)=>{
 
 const getExpense=async (req ,res)=>{
   try {
-    const expenses = await Expense.findAll();
+    const expenses = await Expense.findAll({where:{UserId:req.user.userId}});
     res.status(200).json({ expenses });
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch expenses' });
@@ -23,7 +23,7 @@ const getExpense=async (req ,res)=>{
 const deleteExpense = async (req, res) => {
   try {
     const expenseId = req.params.id;
-    const deleted = await Expense.destroy({ where: { id: expenseId } });
+    const deleted = await Expense.destroy({ where: { id: expenseId ,UserId:req.user.userId} });
 
     if (deleted) {
       res.status(200).json({ message: 'Expense deleted successfully' });

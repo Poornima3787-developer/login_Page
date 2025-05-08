@@ -11,7 +11,7 @@ app.use(cors());
 app.use('/api/user',userRouter);
 app.use('/expenses',expenseRoute);
 
-sequelize.sync({force:true}).then(()=>{
+sequelize.sync().then(()=>{
   app.listen(3000,(req,res)=>{
     console.log("Server is running");
   }) 

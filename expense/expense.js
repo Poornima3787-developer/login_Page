@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', loadExpenses);
 const API_URL="http://localhost:3000/expenses";
+const token=localStorage.getItem('token');
 
 async function handleSubmitForm(event){
   event.preventDefault();
@@ -9,7 +10,11 @@ async function handleSubmitForm(event){
   const category=event.target.category.value;
 
   try {
-    const res=await axios.post(API_URL,{amount,description,category});
+    const res=await axios.post(API_URL,{amount,description,category},{
+      headers:{
+        Authorization:token
+      }
+    });
     displayExpense(res.data.expense);
     alert('Expenses added successfully');
     event.target.reset();
@@ -38,7 +43,11 @@ function displayExpense(expense) {
 
 async function deleteExpense(id) {
   try {
-    await axios.delete("API_URL/${id}");
+    await axios.delete(`${API_URL}/${id}`,{
+      headers:{
+        Authorization:token
+      }
+    });
     document.getElementById(`expense-${id}`).remove();
     alert('Expense deleted!');
   } catch (err) {
