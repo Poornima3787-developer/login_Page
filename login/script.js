@@ -15,6 +15,7 @@ async function login(event){
   try{
     const response=await axios.post(API_URL,{email,password});
     alert('login successfully');
+    window.location.href="/expense/expense.html";
   }catch (err){
     const msg = err.response?.data?.message || "Login failed.";
     alert(msg);
